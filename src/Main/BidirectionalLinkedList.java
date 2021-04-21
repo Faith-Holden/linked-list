@@ -1,3 +1,5 @@
+package Main;
+
 public class BidirectionalLinkedList <Type> {
 
     private BidirectionalListNode<Type> listNode;
@@ -21,13 +23,12 @@ public class BidirectionalLinkedList <Type> {
         return listNode.getItem(itemLocation);
     }
 
-    public void printList (){
+    @Override
+    public String toString(){
         if (listNode==null){
-            System.out.println("Sorry, your list is empty right now, and cannot be printed.");
+            throw new IndexOutOfBoundsException ("Sorry, your list is empty right now, and cannot be printed.");
         }
-        else{
-            listNode.printList();
-        }
+        return listNode.toString();
     }
 
     public int getLength (){

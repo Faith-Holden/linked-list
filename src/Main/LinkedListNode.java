@@ -1,14 +1,16 @@
+package Main;
+
 public class LinkedListNode <Type>{
     public LinkedListNode(Type dataForList){
         data = dataForList;
     }
     public LinkedListNode(Type copyListData, LinkedListNode<Type> copyListNext){
         this.data = copyListData;
-        this.nextItem = copyListNext;
+        this.nextNode = copyListNext;
     }
 
-    private Type data;
-    public LinkedListNode<Type> nextItem = null;
+    Type data;
+    public LinkedListNode<Type> nextNode = null;
     int numberOfItemsInList = 1;
 
 
@@ -22,24 +24,28 @@ public class LinkedListNode <Type>{
         if (itemLocation ==0){
             return data;
         }
-        tempList = nextItem;
+        tempList = nextNode;
         counter++;
-        while (counter<itemLocation && tempList.nextItem!=null){
-            tempList = tempList.nextItem;
+        while (counter<itemLocation && tempList.nextNode !=null){
+            tempList = tempList.nextNode;
             counter++;
         }
         return tempList.data;
     }
 
-    void printList (){
-        LinkedListNode<Type> tempList;
-        System.out.println(data);
-        tempList = nextItem;
-        while (tempList!=null){
-            System.out.println(tempList.data);
-            tempList = tempList.nextItem;
+    @Override
+    public String toString (){
+        StringBuilder buildListString = new StringBuilder();
+        LinkedListNode<Type>  currentList = this;
 
+        while (currentList.nextNode!=null){
+            buildListString.append(currentList.data.toString());
+            buildListString.append("\n");
+            currentList = currentList.nextNode;
         }
+
+        buildListString.append(currentList.data.toString());
+        return buildListString.toString();
     }
 
     int getLength (){
@@ -47,36 +53,36 @@ public class LinkedListNode <Type>{
     }
 
     void insertItem (int insertLocation, Type dataToInsert){
-        LinkedListNode<Type> holdListPt1 = new LinkedListNode<>(data, nextItem);
+        LinkedListNode<Type> holdListPt1 = new LinkedListNode<>(data, nextNode);
         if (insertLocation!=0){
             holdListPt1 = this;
             int locationCounter = 0;
             while (locationCounter<insertLocation-1){
-                holdListPt1 = holdListPt1.nextItem;
+                holdListPt1 = holdListPt1.nextNode;
                 locationCounter++;
             }
-            holdListPt1.nextItem = new LinkedListNode<>(dataToInsert, holdListPt1.nextItem);
+            holdListPt1.nextNode = new LinkedListNode<>(dataToInsert, holdListPt1.nextNode);
         }
         else{
             data = dataToInsert;
-            nextItem = holdListPt1;
+            nextNode = holdListPt1;
         }
         numberOfItemsInList++;
     }
 
     void deleteItem (int deleteLocation){
         int counter = 0;
-        LinkedListNode<Type> holdList = new LinkedListNode<>(data, nextItem);
+        LinkedListNode<Type> holdList = new LinkedListNode<>(data, nextNode);
         if (deleteLocation==0){
-            data = nextItem.data;
-            nextItem = nextItem.nextItem;
+            data = nextNode.data;
+            nextNode = nextNode.nextNode;
         }
         else{
             while (counter < deleteLocation-1){
-                holdList = holdList.nextItem;
+                holdList = holdList.nextNode;
                 counter++;
             }
-            holdList.nextItem = holdList.nextItem.nextItem;
+            holdList.nextNode = holdList.nextNode.nextNode;
         }
         numberOfItemsInList--;
     }

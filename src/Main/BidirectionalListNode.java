@@ -1,3 +1,5 @@
+package Main;
+
 public class BidirectionalListNode <Type>{
     public BidirectionalListNode(Type dataForNode){
         nodeData = dataForNode;
@@ -10,7 +12,7 @@ public class BidirectionalListNode <Type>{
 
     void insertItem(int insertLocation, Type dataToInsert){
         int counter = 0;
-        BidirectionalListNode<Type> nodeToInsert = new BidirectionalListNode<Type> (dataToInsert);
+        BidirectionalListNode<Type> nodeToInsert = new BidirectionalListNode<> (dataToInsert);
         BidirectionalListNode<Type>  currentList = this;
         while(currentList.previousNode!=null){
             currentList = currentList.previousNode;
@@ -22,28 +24,31 @@ public class BidirectionalListNode <Type>{
                 counter++;
             }
             if (currentList.nextNode==null){
-                setNewConnection(currentList, nodeToInsert, true);
+                setNewConnection(currentList, nodeToInsert);
             }
             else{
-                BidirectionalListNode<Type>  pt2ofCurrentList = currentList.nextNode.nextNode;
-                setNewConnection(pt2ofCurrentList, nodeToInsert, false);
-                setNewConnection(currentList, pt2ofCurrentList, true);
+                BidirectionalListNode<Type>  pt2ofCurrentList = currentList.nextNode;
+                setNewConnection(nodeToInsert, pt2ofCurrentList);
+                setNewConnection(currentList, nodeToInsert);
             }
         }
         else {
-            setNewConnection(currentList, nodeToInsert, false);
+            setNewConnection(nodeToInsert, currentList);
         }
+
 
         numberOfItemsInList++;
     }
 
     void appendToList (Type  dataToAppend){
+
+
         BidirectionalListNode<Type>  nodeToInsert = new BidirectionalListNode <Type> (dataToAppend);
         BidirectionalListNode<Type>  currentList = this;
         while (currentList.nextNode!=null){
             currentList = currentList.nextNode;
         }
-        setNewConnection(currentList, nodeToInsert, true);
+        setNewConnection(currentList, nodeToInsert);
         numberOfItemsInList++;
     }
 
@@ -53,7 +58,7 @@ public class BidirectionalListNode <Type>{
         while(currentList.previousNode!=null){
             currentList = currentList.previousNode;
         }
-        while (counter<itemLocation-1){
+        while (counter<itemLocation){
             currentList = currentList.nextNode;
             counter++;
         }
@@ -75,10 +80,12 @@ public class BidirectionalListNode <Type>{
 
         if(deleteLocation==0){
             currentList = currentList.nextNode;
-            currentList.previousNode=null;
+            this.nextNode = currentList.nextNode;
+            this.nodeData = currentList.nodeData;
+
         }
         else {
-            while (counter<deleteLocation-2){
+            while (counter<deleteLocation-1){
                 currentList = currentList.nextNode;
                 counter++;
             }
@@ -86,34 +93,35 @@ public class BidirectionalListNode <Type>{
                 currentList.nextNode=null;
             }
             else {
-                setNewConnection(currentList, currentList.nextNode.nextNode, true);
+                setNewConnection(currentList, currentList.nextNode.nextNode);
             }
         }
         numberOfItemsInList--;
     }
 
-    void printList (){
+
+    @Override
+    public String toString(){
+        StringBuilder buildListString = new StringBuilder();
         BidirectionalListNode<Type>  currentList = this;
+
         while(currentList.previousNode!=null){
             currentList = currentList.previousNode;
         }
         while (currentList.nextNode!=null){
-            System.out.println(currentList.nodeData);
+            buildListString.append(currentList.nodeData.toString());
+            buildListString.append("\n");
             currentList = currentList.nextNode;
         }
-        System.out.println(currentList.nodeData);
+
+        buildListString.append(currentList.nodeData.toString());
+        return buildListString.toString();
     }
 
-    private void setNewConnection (BidirectionalListNode<Type>  originalNode, BidirectionalListNode<Type> newConnectionNode, boolean isOriginalEarlier){
+    private void setNewConnection (BidirectionalListNode<Type> firstConnectionNode, BidirectionalListNode<Type> secondConnectionNode){
 
-        if (isOriginalEarlier){
-            originalNode.nextNode = newConnectionNode;
-            newConnectionNode.previousNode = originalNode;
-        }
-        else {
-            originalNode.previousNode = newConnectionNode;
-            newConnectionNode.nextNode = originalNode;
-        }
+            firstConnectionNode.nextNode = secondConnectionNode;
+            secondConnectionNode.previousNode = firstConnectionNode;
     }
 
 

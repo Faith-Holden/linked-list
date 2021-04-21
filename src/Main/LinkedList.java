@@ -1,3 +1,5 @@
+package Main;
+
 public class LinkedList <Type> {
     private LinkedListNode<Type> listNode;
 
@@ -20,13 +22,11 @@ public class LinkedList <Type> {
         return listNode.getItem(itemLocation);
     }
 
-    public void printList (){
+    public String toString (){
         if (listNode==null){
-            System.out.println("Sorry, your list is empty right now, and cannot be printed.");
+            throw new IndexOutOfBoundsException ("Sorry, your list is empty right now, and cannot be printed.");
         }
-        else{
-            listNode.printList();
-        }
+        return listNode.toString();
     }
 
     public int getLength (){
